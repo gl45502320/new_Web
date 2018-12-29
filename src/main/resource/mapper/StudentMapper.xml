@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gaolong.dao.StudentDao">
+    <select id="selectAll" resultType="com.gaolong.entity.Student">
+        select * from student
+
+    </select>
+
+    <select id="studentList" resultType="com.gaolong.entity.Student">
+		select * from student
+	</select>
+
+    <select id="listOne" resultType="com.gaolong.entity.Student">
+		select * from student where id=#{id}
+	</select>
+
+    <insert id="insert">
+		insert into student values(#{id},#{name},#{sex},#{age},#{score})
+	</insert>
+
+    <delete id="delete">
+		delete  from student where id=#{id}
+	</delete>
+
+    <update id="update">
+		update student set name=#{name},sex=#{sex}, age=#{age},score=#{score} where id=#{id}
+	</update>
+
+    <delete id="deleteAll">
+        delete from student where id in
+        <foreach collection="array" open="(" close=")" separator="," item="idd">
+
+            #{idd}
+
+        </foreach>
+    </delete>
+
+    <insert id="insertMuch">
+        insert into student
+        select aaa.nextval,s.* from
+        <foreach collection="list" open="(" close=")s" separator="union" item="stu">
+            select #{stu.id},#{stu.name},#{stu.sex},#{stu.age},#{stu.score} from dual
+        </foreach>
+    </insert>
+
+    <select id="stuPage" resultType="com.gaolong.entity.Student">
+
+        select * from student
+        <if test="name!=null and name!=''">
+            where name like #{name}
+        </if>
+        LIMIT #{page},#{rows}
+
+    </select>
+
+    <select id="countStudent" resultType="int">
+
+        select count(*) from student
+
+        <if test="name!=null and name!=''">
+            where name like #{name}
+        </if>
+
+    </select>
+
+    <select id="pageSelect" resultType="com.gaolong.entity.Student">
+
+        select * from student
+        <if test="name!=null and name!=''">
+            where name like #{name}
+        </if>
+
+
+    </select>
+
+
+</mapper>
+
+
